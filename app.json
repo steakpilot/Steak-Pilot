@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "SteakPilot",
+    "slug": "steakpilot",
+    "description": "Hands-free steak timing with adaptive chef-guided plans and fully customizable flip timers.",
+    "version": "1.0.0",
+    "scheme": "steakpilot",
+    "orientation": "portrait",
+    "icon": "./assets/steakpilot-app-icon-v2.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/steakpilot-mark-v2.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#090706"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "icon": "./assets/steakpilot-app-icon-v2.png",
+      "buildNumber": "1"
+    },
+    "android": {
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#090706",
+        "foregroundImage": "./assets/steakpilot-mark-v2.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-notifications"
+    ],
+    "web": {
+      "favicon": "./assets/steakpilot-app-icon-v2.png"
+    }
+  }
+}
