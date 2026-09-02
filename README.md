@@ -4,9 +4,9 @@ This is the Windows-friendly SteakPilot app. It runs on a physical iPhone throug
 
 ## Version 1 status
 
-The Version 1 implementation scope is frozen and the Phase 1 code is complete. Cooking validation remains open: software checks cannot prove doneness across real steaks, pans, burners, and beginner technique. The authoritative scope, guidance bands, behavior contract, free/future-Pro boundary, exclusions, and change-control rule are recorded in [docs/V1_PRODUCT_SPEC.md](docs/V1_PRODUCT_SPEC.md).
+Phase 1 is complete and the Version 1 engineering-MVP scope is frozen. The professionally supported cooking workflow, field-tested core setup, guidance bands, behavior contract, free/future-Pro boundary, exclusions, and validation boundaries are recorded in [docs/V1_PRODUCT_SPEC.md](docs/V1_PRODUCT_SPEC.md).
 
-New features remain in the backlog while cooking validation, production hardening, and App Store preparation proceed. The sanity check enforces the frozen choice IDs and supported plan matrix so accidental scope drift fails visibly.
+Broader cook calibration continues in Phase 2 while production hardening and App Store preparation proceed. The sanity check enforces the frozen choice IDs and supported plan matrix so accidental scope drift fails visibly.
 
 The project intentionally uses Expo SDK 54 because that is the version supported by the public Expo Go app currently distributed through Apple's App Store.
 

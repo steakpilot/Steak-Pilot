@@ -1,8 +1,10 @@
 # SteakPilot Version 1 Product Specification
 
-**Status:** IMPLEMENTATION FROZEN; COOKING VALIDATION OPEN  
-**Updated on:** September 1, 2026  
-**Phase 1:** CODE COMPLETE; REAL-COOK ACCEPTANCE PENDING
+**Status:** PHASE 1 COMPLETE; IMPLEMENTATION FROZEN
+
+**Updated on:** September 1, 2026
+
+**Phase 1:** COMPLETE — ENGINEERING MVP
 
 This document is the authoritative scope for SteakPilot Version 1. A behavior is not part of V1 unless it is listed here. Changes require an explicit product decision, an update to this document, and passing release checks.
 
@@ -110,6 +112,18 @@ Potential future Pro functionality is not part of V1 and may include personal st
 - Subscriptions, purchases, advertisements, or a paywall.
 - Public Android-store launch work; Android follows validation of the iPhone product.
 
+## Phase 1 completion record
+
+Phase 1 was completed on September 1, 2026. The completion decision covers the engineering MVP and its professionally supported cooking workflow:
+
+- Guided Cook and Custom Timer complete their full cook/rest flows.
+- The plan-engine audit passes all 302,400 supported input combinations plus manual-timer edge cases.
+- TypeScript, Expo Doctor, iOS export, and GitHub Actions quality checks pass.
+- Iterative physical-iPhone testing produced and verified timer restoration, stale-notification cleanup, queued flip behavior, grouped Undo, voice controls, and launch-screen corrections.
+- The core ribeye/New York strip cast-iron method is field-tested and supported by the documented 55-chef method audit.
+
+Phase 1 completion does not mean every generated combination is empirically calibrated or that doneness is guaranteed. Broader controlled cook coverage, beginner usability studies, and personal equipment calibration move to Phase 2.
+
 ## Acceptance criteria
 
 The implementation is complete only while all of the following are true:
@@ -122,7 +136,7 @@ The implementation is complete only while all of the following are true:
 6. The iOS JavaScript bundle exports successfully.
 7. The product remains usable offline and without an account.
 
-Phase 1 cooking validation is not complete until the defined 1–2 inch beginner-guided range has controlled real-cook coverage across its launch cuts, methods, equipment, and doneness targets, followed by observed beginner usability cooks. Passing software tests proves structural correctness; it does not prove doneness accuracy.
+The defined 1–2 inch beginner-guided range remains a professional-method-based estimate outside the field-tested core setup. Phase 2 will add controlled real-cook coverage across launch cuts, methods, equipment, and doneness targets, followed by observed beginner usability cooks. Passing software tests proves structural correctness; it does not prove doneness accuracy.
 
 ## Change-control rule
 
