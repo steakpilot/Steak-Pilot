@@ -52,6 +52,7 @@ npx expo start --tunnel
 - Automatic hands-free progression
 - Spoken instructions, local alerts, and screen keep-awake
 - Pause, Skip, Mute, Target Reached, and prominent contextual Undo controls
+- Grouped Undo for repeated +45-second taps, plus separate removal of one queued round
 - Context-aware extra 45-second flip rounds that queue behind the active timer and preserve the upcoming temperature checkpoint
 - Persistent removal of queued extra rounds before they begin
 - Early temperature-check signals and a final cook/rest decision gate

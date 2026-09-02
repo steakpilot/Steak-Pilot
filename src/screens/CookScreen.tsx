@@ -53,6 +53,8 @@ function extraRoundInstruction(step: CookingStep) {
 
 interface UndoSnapshot {
   actionLabel: string;
+  groupKey?: string;
+  groupCount: number;
   index: number;
   remaining: number;
   paused: boolean;
@@ -96,6 +98,7 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
   const manualRoundRef = useRef(resumeSession?.manualRound ?? false);
   const queuedFlipRoundsRef = useRef(resumeSession?.queuedFlipRounds ?? 0);
   const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const undoSnapshotRef = useRef<UndoSnapshot | null>(null);
   const checkpointReminderKeyRef = useRef('');
 
   const speak = (message: string) => {
@@ -113,6 +116,7 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
   const clearUndo = () => {
     if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
     undoTimerRef.current = null;
+    undoSnapshotRef.current = null;
     setUndoSnapshot(null);
   };
 
@@ -136,10 +140,15 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
     });
   };
 
-  const rememberUndo = (actionLabel = 'Last action') => {
+  const rememberUndo = (actionLabel = 'Last action', groupKey?: string) => {
     if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    setUndoSnapshot({
+    const existing = undoSnapshotRef.current;
+    const snapshot: UndoSnapshot = groupKey && existing?.groupKey === groupKey
+      ? { ...existing, actionLabel, groupCount: existing.groupCount + 1 }
+      : {
       actionLabel,
+      groupKey,
+      groupCount: 1,
       index: indexRef.current,
       remaining: remainingRef.current,
       paused: pausedRef.current,
@@ -147,8 +156,11 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
       extraRounds: extraRoundsRef.current,
       manualRound: manualRoundRef.current,
       queuedFlipRounds: queuedFlipRoundsRef.current,
-    });
+    };
+    undoSnapshotRef.current = snapshot;
+    setUndoSnapshot(snapshot);
     undoTimerRef.current = setTimeout(() => {
+      undoSnapshotRef.current = null;
       setUndoSnapshot(null);
       undoTimerRef.current = null;
     }, 15_000);
@@ -391,7 +403,7 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
         speak('Maximum of 10 queued extra rounds reached. Remove a queued round before adding another.');
         return;
       }
-      rememberUndo('Queued one extra 45-second flip');
+      rememberUndo('Queued extra 45-second flip rounds', `queue-flip-${indexRef.current}`);
       const nextQueued = queuedFlipRoundsRef.current + 1;
       queuedFlipRoundsRef.current = nextQueued;
       setQueuedFlipRounds(nextQueued);
@@ -406,7 +418,10 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
       return;
     }
 
-    rememberUndo('Added 45 seconds to this timer');
+    rememberUndo(
+      current.phase === 'rest' ? 'Added time to the rest timer' : 'Added time to this timer',
+      `timer-extension-${indexRef.current}`,
+    );
     remainingRef.current += 45;
     setRemaining(remainingRef.current);
     if (!pausedRef.current) {
@@ -450,10 +465,10 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
 
   const removeQueuedFlip = () => {
     if (queuedFlipRoundsRef.current <= 0) return;
+    rememberUndo('Removed one queued 45-second round');
     const nextQueued = queuedFlipRoundsRef.current - 1;
     queuedFlipRoundsRef.current = nextQueued;
     setQueuedFlipRounds(nextQueued);
-    clearUndo();
     if (!pausedRef.current) {
       scheduleCookingNotifications(plan, indexRef.current, remainingRef.current, nextQueued);
     }
@@ -481,8 +496,11 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
   };
 
   const undoLastAction = () => {
-    const snapshot = undoSnapshot;
+    const snapshot = undoSnapshotRef.current ?? undoSnapshot;
     if (!snapshot) return;
+    const undoAnnouncement = snapshot.groupCount > 1
+      ? `${snapshot.groupCount} additions undone.`
+      : 'Last action undone.';
     clearUndo();
     indexRef.current = snapshot.index;
     checkpointReminderKeyRef.current = '';
@@ -501,7 +519,7 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
     queuedFlipRoundsRef.current = snapshot.queuedFlipRounds;
     if (snapshot.awaitingDecision) {
       cancelCookingNotifications();
-      speak('Last action undone. Return to the cooking checkpoint.');
+      speak(`${undoAnnouncement} Return to the cooking checkpoint.`);
       return;
     }
     endTimeRef.current = Date.now() + Math.max(1, snapshot.remaining) * 1000;
@@ -513,7 +531,7 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
         snapshot.queuedFlipRounds,
       );
     }
-    speakStep(plan.steps[snapshot.index], 'Last action undone.');
+    speakStep(plan.steps[snapshot.index], undoAnnouncement);
   };
 
   const toggleMute = () => {
@@ -695,6 +713,23 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
         </View>
       ) : null}
 
+      {undoSnapshot ? (
+        <Pressable accessibilityRole="button" onPress={undoLastAction} style={styles.recoveryButton}>
+          <Text style={styles.recoveryIcon}>↶</Text>
+          <View style={styles.recoveryTextBlock}>
+            <Text style={styles.recoveryTitle}>
+              {undoSnapshot.groupCount > 1 ? `UNDO ${undoSnapshot.groupCount} ADDITIONS` : 'UNDO LAST ACTION'}
+            </Text>
+            <Text style={styles.recoveryBody}>
+              {undoSnapshot.groupCount > 1
+                ? `Restore the timer and queue to before these ${undoSnapshot.groupCount} × 45-second additions`
+                : undoSnapshot.actionLabel}
+            </Text>
+          </View>
+          <Text style={styles.recoveryAction}>{undoSnapshot.groupCount > 1 ? 'UNDO ALL' : 'UNDO'}</Text>
+        </Pressable>
+      ) : null}
+
       {queuedFlipRounds > 0 ? (
         <Pressable accessibilityRole="button" onPress={removeQueuedFlip} style={styles.removeQueueButton}>
           <Text style={styles.recoveryIcon}>−</Text>
@@ -705,15 +740,6 @@ export function CookScreen({ plan, onDone, onSessionChange, resumeSession }: Pro
             </Text>
           </View>
           <Text style={styles.removeQueueAction}>REMOVE</Text>
-        </Pressable>
-      ) : undoSnapshot ? (
-        <Pressable accessibilityRole="button" onPress={undoLastAction} style={styles.recoveryButton}>
-          <Text style={styles.recoveryIcon}>↶</Text>
-          <View style={styles.recoveryTextBlock}>
-            <Text style={styles.recoveryTitle}>UNDO LAST ACTION</Text>
-            <Text style={styles.recoveryBody}>{undoSnapshot.actionLabel}</Text>
-          </View>
-          <Text style={styles.recoveryAction}>UNDO</Text>
         </Pressable>
       ) : manualRound ? (
         <Pressable accessibilityRole="button" onPress={endExtraRound} style={styles.recoveryButton}>

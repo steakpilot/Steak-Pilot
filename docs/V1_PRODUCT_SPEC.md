@@ -65,7 +65,7 @@ The user creates a manual cooking sequence without doneness calculation.
 - **Queue Flip +45** waits for the active timer to finish, then inserts a 45-second flip round carrying the current checkpoint guidance.
 - Up to 10 extra flip rounds may be queued. The newest queued round can be removed before it begins.
 - At the final cooking checkpoint, the user chooses to rest or start another 45-second flip/cook round.
-- Contextual Undo is available for 15 seconds after supported manual actions.
+- Contextual Undo is available for 15 seconds after supported manual actions. Repeated +45-second taps on the same active stage are grouped so one Undo restores the timer and queue to their state before the burst; removing one queued round remains a separate control.
 - Ending or completing a session cancels its scheduled cooking notifications.
 
 ## Recovery and local data contract
