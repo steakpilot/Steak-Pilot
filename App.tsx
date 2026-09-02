@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { BrandMark } from './src/components/BrandMark';
 import { makeCookingPlan } from './src/engine';
@@ -32,6 +33,10 @@ type Screen = 'home' | 'setup' | 'plan' | 'manual' | 'cook';
 const SETTINGS_KEY = 'steakpilot.settings.v2';
 const MANUAL_TIMER_KEY = 'steakpilot.manual-timer.v1';
 const ACTIVE_COOK_KEY = 'steakpilot.active-cook.v1';
+const LAUNCH_STARTED_AT = Date.now();
+const MINIMUM_BRAND_SCREEN_MS = 550;
+
+SplashScreen.setOptions({ duration: 500, fade: true });
 
 function savedChoice<T extends string>(value: unknown, choices: { id: T }[], fallback: T) {
   return choices.some((choice) => choice.id === value) ? (value as T) : fallback;
@@ -139,6 +144,10 @@ export default function App() {
       } catch {
         await Promise.all([AsyncStorage.removeItem(ACTIVE_COOK_KEY), cancelCookingNotifications()]);
       } finally {
+        const brandTimeRemaining = Math.max(0, MINIMUM_BRAND_SCREEN_MS - (Date.now() - LAUNCH_STARTED_AT));
+        if (brandTimeRemaining > 0) {
+          await new Promise((resolve) => setTimeout(resolve, brandTimeRemaining));
+        }
         if (active) setHydrated(true);
       }
     };
@@ -194,9 +203,26 @@ export default function App() {
   if (!hydrated) {
     return (
       <View style={styles.loading}>
-        <View style={styles.loadingMark}><BrandMark size={90} /></View>
-        <Text style={styles.loadingName}>SteakPilot</Text>
-        <ActivityIndicator color={colors.orange} size="large" />
+        <View pointerEvents="none" style={styles.loadingGlowTop} />
+        <View pointerEvents="none" style={styles.loadingGlowBottom} />
+        <View style={styles.loadingContent}>
+          <Text style={styles.loadingKicker}>PRECISION STEAK ASSISTANT</Text>
+          <View style={styles.loadingMark}>
+            <View style={styles.loadingMarkGlow} />
+            <BrandMark size={104} />
+          </View>
+          <View style={styles.loadingWordmark}>
+            <Text style={styles.loadingName}>Steak</Text>
+            <Text style={styles.loadingNameAccent}>Pilot</Text>
+          </View>
+          <Text style={styles.loadingTagline}>From first sear to final rest.</Text>
+          <View style={styles.loadingRule} />
+          <View style={styles.loadingStatus}>
+            <ActivityIndicator color={colors.orange} size="small" />
+            <Text style={styles.loadingStatusText}>PREPARING YOUR COOK</Text>
+          </View>
+        </View>
+        <Text style={styles.loadingFooter}>HANDS-FREE  •  ADAPTIVE  •  BUILT FOR THE PAN</Text>
       </View>
     );
   }
@@ -240,7 +266,19 @@ export default function App() {
 
 const styles = StyleSheet.create({
   safeArea: { backgroundColor: colors.background, flex: 1 },
-  loading: { alignItems: 'center', backgroundColor: colors.background, flex: 1, justifyContent: 'center' },
-  loadingMark: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.orange, borderRadius: 56, borderWidth: 1, height: 112, justifyContent: 'center', marginBottom: 16, width: 112 },
-  loadingName: { color: colors.text, fontSize: 24, fontWeight: '900', letterSpacing: -0.6, marginBottom: 18 },
+  loading: { alignItems: 'center', backgroundColor: colors.background, flex: 1, justifyContent: 'center', overflow: 'hidden', paddingHorizontal: 24 },
+  loadingGlowTop: { backgroundColor: colors.orange, borderRadius: 180, height: 330, opacity: 0.12, position: 'absolute', right: -160, top: -130, width: 330 },
+  loadingGlowBottom: { backgroundColor: '#6E2D12', borderRadius: 150, bottom: -150, height: 300, left: -170, opacity: 0.16, position: 'absolute', width: 300 },
+  loadingContent: { alignItems: 'center', width: '100%' },
+  loadingKicker: { color: colors.orange, fontSize: 10, fontWeight: '900', letterSpacing: 2.2, marginBottom: 22 },
+  loadingMark: { alignItems: 'center', backgroundColor: colors.surface, borderColor: '#6A351D', borderRadius: 70, borderWidth: 1, height: 140, justifyContent: 'center', marginBottom: 20, overflow: 'hidden', shadowColor: colors.orange, shadowOffset: { height: 10, width: 0 }, shadowOpacity: 0.24, shadowRadius: 24, width: 140 },
+  loadingMarkGlow: { backgroundColor: colors.orange, borderRadius: 60, height: 115, opacity: 0.1, position: 'absolute', width: 115 },
+  loadingWordmark: { alignItems: 'baseline', flexDirection: 'row', justifyContent: 'center' },
+  loadingName: { color: colors.text, fontSize: 42, fontWeight: '900', letterSpacing: -1.8 },
+  loadingNameAccent: { color: colors.orange, fontSize: 42, fontWeight: '900', letterSpacing: -1.8 },
+  loadingTagline: { color: colors.muted, fontSize: 14, marginTop: 7 },
+  loadingRule: { backgroundColor: colors.border, height: 1, marginVertical: 25, width: 112 },
+  loadingStatus: { alignItems: 'center', flexDirection: 'row', gap: 10 },
+  loadingStatusText: { color: colors.text, fontSize: 10, fontWeight: '900', letterSpacing: 1.35 },
+  loadingFooter: { bottom: 34, color: colors.muted, fontSize: 8, fontWeight: '800', letterSpacing: 1.05, position: 'absolute', textAlign: 'center' },
 });

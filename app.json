@@ -7,12 +7,8 @@
     "scheme": "steakpilot",
     "orientation": "portrait",
     "icon": "./assets/steakpilot-app-icon-v2.png",
+    "backgroundColor": "#090706",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/steakpilot-mark-v2.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#090706"
-    },
     "ios": {
       "supportsTablet": false,
       "icon": "./assets/steakpilot-app-icon-v2.png",
@@ -27,6 +23,19 @@
       "predictiveBackGestureEnabled": false
     },
     "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#090706",
+          "image": "./assets/steakpilot-mark-v2.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "dark": {
+            "backgroundColor": "#090706",
+            "image": "./assets/steakpilot-mark-v2.png"
+          }
+        }
+      ],
       "expo-notifications"
     ],
     "web": {
