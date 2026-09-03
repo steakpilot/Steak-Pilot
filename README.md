@@ -10,6 +10,19 @@ Broader cook calibration continues in Phase 2 while production hardening and App
 
 The project intentionally uses Expo SDK 54 because that is the version supported by the public Expo Go app currently distributed through Apple's App Store.
 
+## Product operations
+
+SteakPilot is managed as a durable product project rather than through chat memory alone:
+
+- [Current project state](docs/project/PROJECT_STATE.md)
+- [Gate-based roadmap](docs/project/ROADMAP.md)
+- [Decision log](docs/project/DECISIONS.md)
+- [Validation ledger](docs/project/VALIDATION.md)
+- [Business hypotheses](docs/project/BUSINESS.md)
+- [Latest handoff](docs/project/HANDOFF.md)
+
+Project-local skills guide normal SteakPilot work and the `$handoff` workflow. Root instructions in [AGENTS.md](AGENTS.md) tell future Codex tasks when to load them.
+
 ## Start it from Windows
 
 Open PowerShell and run:

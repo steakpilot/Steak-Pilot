@@ -1,0 +1,7 @@
+interface:
+  display_name: "SteakPilot Product"
+  short_description: "Operate SteakPilot as a serious product"
+  default_prompt: "Use $steakpilot-product to plan or execute the next evidence-backed SteakPilot milestone."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "SteakPilot Handoff"
+  short_description: "Preserve and transfer SteakPilot project context"
+  default_prompt: "Use $handoff to update the durable SteakPilot project state and prepare a complete handoff."
+
+policy:
+  allow_implicit_invocation: true
