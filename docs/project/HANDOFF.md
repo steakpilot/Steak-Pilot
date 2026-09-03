@@ -16,13 +16,15 @@ Phase 1 is complete. The codebase is ready to move into a deliberately narrow Ph
 ## Completed in this work period
 
 - Added a project-local SteakPilot product operating skill.
-- Added a `/handoff`-triggered skill and durable handoff format.
+- Added a project-local durable handoff-record skill and format.
+- Added a personal explicit `$handoff` router that creates fresh tasks in named saved projects.
 - Added durable project state, roadmap, decision, validation, and business records.
 - Updated root project instructions so future tasks load the correct product context.
 
 ## Verification performed
 
 - Both project-local skills passed the skill validator.
+- The personal explicit `$handoff` router passed the skill validator and resolves the saved `SteakPilot` project to the `SteakPilot-Expo` repository subdirectory.
 - TypeScript compilation passed.
 - The full sanity audit passed 302,400 guided plans and four manual edge cases.
 - Repository whitespace checks passed; the only emitted note was Git's expected LF-to-CRLF conversion warning for `AGENTS.md` on Windows.
@@ -31,13 +33,13 @@ See `docs/project/VALIDATION.md` for completed Phase 1 evidence.
 
 ## Open risks and blockers
 
-- SteakPilot is not yet registered as a saved Codex project. The available Codex project API is read-only for registration, and Windows automation is prohibited from controlling the Codex app; the user must add the existing folder once through the project picker.
+- SteakPilot is registered as a saved Codex project, but its saved root is the `Mark Projects - App` parent folder rather than the `SteakPilot-Expo` Git repository. The `$handoff` router accounts for this by directing new tasks into the exact repository subdirectory.
 - Phase 2 cook matrix, beginner cohort, beta instrumentation, production signing, legal/support surfaces, and store assets remain to be completed.
 - Broad doneness accuracy and commercial demand are unproven.
 
 ## Next actions
 
-1. Register the local folder as a saved Codex project and confirm the project-local skills are discovered.
+1. Confirm the personal `$handoff steakpilot` router creates a fresh task in the saved SteakPilot project.
 2. Define the first Phase 2 beta protocol and measurable exit thresholds.
 3. Prepare the production identity, privacy/support surfaces, and standalone iPhone build.
 4. Run observed beginner cooks and controlled calibration before public submission.

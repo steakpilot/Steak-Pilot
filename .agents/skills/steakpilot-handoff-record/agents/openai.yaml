@@ -1,0 +1,7 @@
+interface:
+  display_name: "SteakPilot Handoff Record"
+  short_description: "Maintain verified SteakPilot transfer context"
+  default_prompt: "Use $steakpilot-handoff-record to update SteakPilot's durable transfer record."
+
+policy:
+  allow_implicit_invocation: true

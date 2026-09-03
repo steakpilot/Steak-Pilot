@@ -4,7 +4,7 @@ SteakPilot is a product project whose long-term goal is a profitable, trusted iO
 
 For every SteakPilot product, engineering, culinary-method, validation, release, store, growth, pricing, or monetization request, read and follow `.agents/skills/steakpilot-product/SKILL.md` before acting.
 
-When the user says `/handoff` or `$handoff`, asks to hand off or continue the project elsewhere, reports lost chat context, or asks to preserve the current state, also read and follow `.agents/skills/handoff/SKILL.md`.
+When preparing or updating SteakPilot's durable handoff record, read and follow `.agents/skills/steakpilot-handoff-record/SKILL.md`. The personal `$handoff` skill handles creation of a fresh Codex task; this project-local skill maintains the evidence that task must receive.
 
 - The project currently targets Expo SDK 54. Before changing Expo APIs or dependencies, consult the exact installed SDK documentation and run Expo Doctor.
 - Before a release commit, run TypeScript compilation, the full plan-engine sanity audit, Expo Doctor, and an iOS export.

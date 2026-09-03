@@ -21,7 +21,7 @@ SteakPilot is managed as a durable product project rather than through chat memo
 - [Business hypotheses](docs/project/BUSINESS.md)
 - [Latest handoff](docs/project/HANDOFF.md)
 
-Project-local skills guide normal SteakPilot work and the `$handoff` workflow. Root instructions in [AGENTS.md](AGENTS.md) tell future Codex tasks when to load them.
+Project-local skills guide normal SteakPilot work and maintain its durable handoff record. A personal `$handoff steakpilot` router creates a fresh task in the saved SteakPilot project and transfers that record. Root instructions in [AGENTS.md](AGENTS.md) tell future Codex tasks when to load the project skills.
 
 ## Start it from Windows
 

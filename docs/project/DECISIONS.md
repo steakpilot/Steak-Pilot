@@ -40,9 +40,18 @@ Do not place the existing safe cooking flow behind a paywall during Phase 2. Tes
 
 ## D-005 — Operate SteakPilot as a durable project
 
-**Date:** September 3, 2026  
+**Date:** September 3, 2026
 **Status:** Active
 
 Use project-local product and handoff skills plus version-controlled state, roadmap, validation, business, and handoff documents. Chat history is context, not the durable source of truth.
 
 **Reason:** The product now spans engineering, cooking evidence, store release, and business development; informal chat memory is no longer adequate.
+
+## D-006 — Separate handoff routing from handoff records
+
+**Date:** September 3, 2026
+**Status:** Active
+
+The personal explicit `$handoff` skill creates a fresh task in a named saved project. SteakPilot's project-local handoff-record skill maintains the durable evidence passed to that task.
+
+**Reason:** Selecting a skill that only writes a summary did not satisfy the user's intended command behavior. Routing and record maintenance are different responsibilities and should not share one ambiguous skill name.

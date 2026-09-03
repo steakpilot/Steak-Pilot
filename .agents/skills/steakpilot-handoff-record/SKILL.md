@@ -1,9 +1,9 @@
 ---
-name: handoff
-description: "Create a durable, evidence-backed SteakPilot handoff between tasks or conversations. Use when the user says /handoff or $handoff, asks to hand off or continue SteakPilot elsewhere, reports lost context, wants a new task to take over, or asks to preserve the current project state before stopping."
+name: steakpilot-handoff-record
+description: "Maintain SteakPilot's durable, evidence-backed transfer record before work moves between tasks or conversations. Use when updating project state for a handoff, recovering lost SteakPilot context, or preparing verified continuation context; this skill records state but does not create the new Codex task."
 ---
 
-# SteakPilot Handoff
+# SteakPilot Handoff Record
 
 Preserve enough verified state that another agent can continue without reconstructing the project from chat history.
 
@@ -17,7 +17,7 @@ Preserve enough verified state that another agent can continue without reconstru
 6. Update the decision or validation ledger if the current work created material evidence or a durable decision.
 7. Run checks proportionate to the changes. Record exact results; do not convert a structural test into a field-validation claim.
 8. Commit or push only when the user requested it or it is an ordinary authorized completion step for the active implementation. Otherwise identify uncommitted work explicitly.
-9. Give the user a concise handoff summary. If the user explicitly asks to create or continue another task, use the task-management tools and include the project path plus the contents of `HANDOFF.md` in the follow-up prompt.
+9. Give the caller a concise verified handoff summary suitable for the personal `$handoff` router or another receiving task.
 
 ## Non-negotiable rules
 
@@ -26,4 +26,4 @@ Preserve enough verified state that another agent can continue without reconstru
 - Include blockers, risks, failed attempts, and unanswered questions. A handoff is not marketing copy.
 - Preserve exact file paths, commands, commit or tag names, and test outcomes when they matter to continuation.
 - Do not call work complete merely because context is being handed off.
-- Do not create a new task unless the user explicitly requests one.
+- Do not create a new task. The personal `$handoff` router owns task creation.

@@ -50,4 +50,4 @@ Update the durable project documents affected by the work:
 - `BUSINESS.md` for audience, positioning, pricing, acquisition, retention, or revenue hypotheses.
 - `ROADMAP.md` when sequencing or exit criteria change.
 
-If context is being transferred, use `$handoff`.
+If context is being transferred, update the durable record with `$steakpilot-handoff-record`; the personal `$handoff` router then creates the fresh project task.
